@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tarot Study Roulette</title>
+    <link rel="stylesheet" href="./styles/tarot-theme.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="app-header">
+        <h1>✦ Tarot Study Roulette ✦</h1>
+        <nav id="tab-nav" class="tab-nav">
+          <button data-view="library" class="tab active">Grimoire</button>
+          <button data-view="roulette" class="tab">The Draw</button>
+          <button data-view="timer" class="tab" disabled>The Vigil</button>
+          <button data-view="flex" class="tab">Reading</button>
+        </nav>
+      </header>
+      <main id="view-root"></main>
+    </div>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

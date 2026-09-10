@@ -1,0 +1,19 @@
+appId: com.appkku.tarotstudyroulette
+productName: Tarot Study Roulette
+directories:
+  output: release
+files:
+  - dist/**/*
+  - package.json
+npmRebuild: true
+win:
+  target:
+    - target: portable
+      arch:
+        - x64
+    - target: nsis
+      arch:
+        - x64
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
