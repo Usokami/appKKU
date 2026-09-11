@@ -1,23 +1,34 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import path from 'node:path';
 import { getDb } from './db';
-import { createSubject, getUserSubjects, togglePoolStatus, spinSubject, getMostStudiedSubjectTitle } from './repositories/subjects';
+import { createSubject, getUserSubjects, togglePoolStatus, deleteSubject, deleteAllSubjects, spinSubject, getMostStudiedSubjectTitle } from './repositories/subjects';
 import { startSession, finishSession } from './repositories/sessions';
 import { getProfile } from './repositories/quest';
 import { TarotIcon, TimeMode } from '../shared/types';
 import { generateStudyTime } from '../shared/points';
 
 function createWindow(): void {
+  const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
+  const width = Math.min(1100, screenWidth);
+  const height = Math.min(760, screenHeight);
+
   const win = new BrowserWindow({
-    width: 1100,
-    height: 760,
+    width,
+    height,
+    minWidth: Math.min(360, screenWidth),
+    minHeight: Math.min(480, screenHeight),
     backgroundColor: '#140a1f',
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, '../preload/preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
     },
   });
+
+  if (width >= screenWidth || height >= screenHeight) {
+    win.maximize();
+  }
 
   win.loadFile(path.join(__dirname, '../renderer/index.html'));
 }
@@ -31,6 +42,8 @@ app.whenReady().then(() => {
   ipcMain.handle('subjects:togglePool', (_e, subjectId: string, inPool: boolean) =>
     togglePoolStatus(subjectId, inPool));
   ipcMain.handle('subjects:mostStudiedTitle', () => getMostStudiedSubjectTitle());
+  ipcMain.handle('subjects:delete', (_e, subjectId: string) => deleteSubject(subjectId));
+  ipcMain.handle('subjects:deleteAll', () => deleteAllSubjects());
 
   ipcMain.handle('roulette:spin', () => spinSubject());
   ipcMain.handle('roulette:generateTime', (_e, mode: TimeMode, manualMinutes?: number) =>

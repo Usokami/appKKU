@@ -42,6 +42,18 @@ export function getUserSubjects(): Subject[] {
   return rows.map(rowToSubject);
 }
 
+export function deleteSubject(subjectId: string): void {
+  const db = getDb();
+  db.prepare('DELETE FROM sessions WHERE subjectId = ?').run(subjectId);
+  db.prepare('DELETE FROM subjects WHERE id = ?').run(subjectId);
+}
+
+export function deleteAllSubjects(): void {
+  const db = getDb();
+  db.prepare('DELETE FROM sessions').run();
+  db.prepare('DELETE FROM subjects').run();
+}
+
 export function togglePoolStatus(subjectId: string, inPool: boolean): Subject {
   const db = getDb();
   db.prepare('UPDATE subjects SET inRoulettePool = ? WHERE id = ?').run(inPool ? 1 : 0, subjectId);

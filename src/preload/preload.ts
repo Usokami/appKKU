@@ -9,6 +9,8 @@ const api = {
     togglePool: (subjectId: string, inPool: boolean): Promise<Subject> =>
       ipcRenderer.invoke('subjects:togglePool', subjectId, inPool),
     mostStudiedTitle: (): Promise<string | null> => ipcRenderer.invoke('subjects:mostStudiedTitle'),
+    delete: (subjectId: string): Promise<void> => ipcRenderer.invoke('subjects:delete', subjectId),
+    deleteAll: (): Promise<void> => ipcRenderer.invoke('subjects:deleteAll'),
   },
   roulette: {
     spin: (): Promise<Subject> => ipcRenderer.invoke('roulette:spin'),

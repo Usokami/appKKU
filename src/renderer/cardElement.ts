@@ -1,7 +1,10 @@
 import { Subject } from '../shared/types';
 import { buildCardFrame } from '../shared/tarotArt';
 
-export function renderTarotCard(subject: Subject, options: { showToggle?: boolean } = {}): HTMLElement {
+export function renderTarotCard(
+  subject: Subject,
+  options: { showToggle?: boolean; showDelete?: boolean } = {},
+): HTMLElement {
   const frame = buildCardFrame(subject.cardOrder, subject.icon, subject.colorHex);
   const card = document.createElement('div');
   card.className = 'tarot-card';
@@ -16,6 +19,7 @@ export function renderTarotCard(subject: Subject, options: { showToggle?: boolea
     <span class="title">${escapeHtml(subject.title)}</span>
     <span class="minutes">${subject.totalMinutesStudied} min studied</span>
     <span class="corner br">${frame.romanNumeral}</span>
+    ${options.showDelete ? '<button type="button" class="card-delete-btn" title="Burn this card">✕</button>' : ''}
   `;
 
   if (options.showToggle) {
